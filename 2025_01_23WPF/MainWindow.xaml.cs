@@ -10,6 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace _2025_01_23WPF
 {
@@ -18,41 +19,65 @@ namespace _2025_01_23WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        /*public class searchedItem
-        {
-            private string Searched;
-            public searchedItem(string item)
-            {
-                this.Searched = item;
-            }
-        }*/
-        public List<string> ListBoxItems { get; private set; }
+        private const string FilePath = "todo.csv";
 
         public MainWindow()
         {
             InitializeComponent();
-            ListBoxItems = [];
+        }
+        private void SaveItem()
+        {
+            var operation = new List<string>();
+            foreach (TodoItem item in LB.Items)
+            {
+                operation.Add(item.ToCsv());
+            }
+            File.WriteAllLines(FilePath, operation);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists(FilePath))
+            {
+                var lines = File.ReadAllLines(FilePath);
+                foreach (var line in lines)
+                {
+                    LB.Items.Add(TodoItem.FromCsv(line));
+                }
+            }
         }
 
         private void SaveBTN_Click(object sender, RoutedEventArgs e)
         {
-            if (TBInput.Text != "")
+            if (LB.SelectedItem != null)
             {
-                ListBoxItems.Add(TBInput.Text);
-                LB.Items.Add(TBInput.Text);
+                var selectedItem = (TodoItem)LB.SelectedItem;
+                selectedItem.Deadline = DP.SelectedDate;
+                selectedItem.Value = TBInput.Text;
             }
-        }
-        private void UpdateBTN_Click(object sender, RoutedEventArgs e)
-        {
-            int LBindex = LB.SelectedIndex;
-            LB.Items.RemoveAt(LBindex);
-            LB.Items.Insert(LBindex, TBInput.Text);
-            TBInput.Text = null;
+            else
+            {
+                var item = new TodoItem
+                {
+                    Value = TBInput.Text,
+                    Deadline = DP.SelectedDate,
+                    CompletedAt = CB.IsChecked == true ? DateTime.Now : null
+                };
+                LB.Items.Add(item);
+            }
+            TBInput.Clear();
+            CB.IsChecked = false;
+            DP.SelectedDate = null;
+            SaveItem();
         }
 
         private void DelBTN_Click(object sender, RoutedEventArgs e)
         {
-            LB.Items.RemoveAt(LB.Items.IndexOf(LB.SelectedItem));
+            if(MessageBox.Show("Do you really want to delete the selected item?","Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                LB.Items.Remove(LB.SelectedItem);
+                SaveItem();
+            }
         }
 
         private void SearchBTN_Click(object sender, RoutedEventArgs e)
@@ -66,7 +91,7 @@ namespace _2025_01_23WPF
                 }
                 string searchQuery = TBSearch.Text;
                 IEnumerable<string> FilteringQuery =
-                    from item in ListBoxItems
+                    from item in 
                     where item.StartsWith(searchQuery) || item.Contains(searchQuery)
                     orderby item ascending
                     select item;
@@ -89,6 +114,28 @@ namespace _2025_01_23WPF
                 {
                     LB.Items.Add(item.ToString());
                 }
+            }
+        }
+
+        private void CB_Click(object sender, RoutedEventArgs e)
+        {
+            if(LB.SelectedItem!=null)
+            {
+                ((TodoItem)LB.SelectedItem).CompletedAt = CB.IsChecked == true
+                    ? DateTime.Now
+                    : null;
+            }
+        }
+
+        private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DelBTN.IsEnabled = LB.SelectedItem != null;
+            if(LB.SelectedItem != null)
+            {
+                var selectedItem = (TodoItem)LB.SelectedItem;
+                TBInput.Text = selectedItem.Value;
+                DP.SelectedDate = selectedItem.Deadline;
+                CB.IsChecked = selectedItem.CompletedAt != null;
             }
         }
     }

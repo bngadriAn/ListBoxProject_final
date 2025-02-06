@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2025_01_23WPF"
+        Loaded="Window_Loaded"
         mc:Ignorable="d"
         Title="MainWindow" Height="560" Width="400"
         Icon="./Project_Icon.png">
@@ -21,13 +22,14 @@
         </Grid.RowDefinitions>
         <TextBox Grid.Column="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center" BorderThickness="3" FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="230" Height="40" x:Name="TBSearch" Margin="17,0,0,0"/>
         <Button Grid.Row="0" Grid.Column="3" Content="Keresés" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="40" x:Name="SearchBTN" Click="SearchBTN_Click"/>
-        <ListBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2"  d:ItemsSource="{d:SampleData ItemCount=10}" x:Name="LB"/>
+        <ListBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="2"  d:ItemsSource="{d:SampleData ItemCount=10}" x:Name="LB" SelectionChanged="LB_SelectionChanged"/>
 
-        <Button Grid.Row="3" Grid.Column="0" Content="Mentés" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top" Width="105" Height="50" x:Name="SaveBTN" Click="SaveBTN_Click"/>
-        <Button Grid.Row="3" Grid.Column="1" Content="Frissítés" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top" Width="105" Height="50" x:Name="UpdateBTN" Click="UpdateBTN_Click"/>
-        <Button Grid.Row="3" Grid.Column="2" Content="Törlés" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top" Width="105" Height="50" x:Name="DelBTN" Click="DelBTN_Click"/>
+        <Button Grid.Row="3" Grid.Column="0" Content="Mentés" HorizontalAlignment="Left" Margin="56,182,0,0" VerticalAlignment="Top" Width="105" Height="50" x:Name="SaveBTN" Click="SaveBTN_Click" Grid.ColumnSpan="2"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="Törlés" HorizontalAlignment="Left" Margin="105,182,0,0" VerticalAlignment="Top" Width="105" Height="50" x:Name="DelBTN" Click="DelBTN_Click" Grid.ColumnSpan="2"/>
         <TextBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" VerticalContentAlignment="Center" FontSize="20" HorizontalAlignment="Center" Margin="0,70,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="351" Height="39" x:Name="TBInput"/>
         <Label Grid.Column="1" Content="Lista elemek kezelése" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Margin="0,20,0,0" Grid.Row="3" VerticalAlignment="Top" Width="132" Height="35"/>
+        <DatePicker x:Name="DP" HorizontalAlignment="Left" Margin="54,133,0,0" Grid.Row="3" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="172" Height="25"/>
+        <CheckBox Grid.Column="2" x:Name="CB" Content="Teljesített" HorizontalAlignment="Left" Margin="7,133,0,0" Grid.Row="3" VerticalAlignment="Top" Width="112" Height="25" VerticalContentAlignment="Center" Click="CB_Click"/>
 
     </Grid>
 </Window>
