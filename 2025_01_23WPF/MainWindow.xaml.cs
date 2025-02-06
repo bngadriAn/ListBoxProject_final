@@ -90,8 +90,9 @@ namespace _2025_01_23WPF
                     LB.Items.Refresh();
                 }
                 string searchQuery = TBSearch.Text;
+                var items = TodoItem.FromCsv;
                 IEnumerable<string> FilteringQuery =
-                    from item in 
+                    from item in items
                     where item.StartsWith(searchQuery) || item.Contains(searchQuery)
                     orderby item ascending
                     select item;
@@ -105,7 +106,7 @@ namespace _2025_01_23WPF
                 }
                 else
                 {
-                    MessageBox.Show("Nem volt a keresésnek megfelelő elem, próbálja újra", "Keresési eredmény");
+                    MessageBox.Show("Nem volt a keresésnek megfelelő elem, próbálja újra", "Keresési eredmény", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             else
