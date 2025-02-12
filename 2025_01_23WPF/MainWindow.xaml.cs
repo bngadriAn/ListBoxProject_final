@@ -20,7 +20,7 @@ namespace _2025_01_23WPF
     public partial class MainWindow : Window
     {
         private const string FilePath = "todo.csv";
-
+        private List<TodoItem> toDoItems = new List<TodoItem>();
         public MainWindow()
         {
             InitializeComponent();
@@ -39,14 +39,11 @@ namespace _2025_01_23WPF
         {
             if (File.Exists(FilePath))
             {
-                var lines = File.ReadAllLines(FilePath);
-                foreach (var line in lines)
-                {
-                    LB.Items.Add(TodoItem.FromCsv(line));
-                }
+                toDoItems = File.ReadAllLines(FilePath).Select(x=>TodoItem.FromCsv(x)).ToList();
+                toDoItems.ForEach(x => LB.Items.Add(x));
             }
         }
-
+        
         private void SaveBTN_Click(object sender, RoutedEventArgs e)
         {
             if (LB.SelectedItem != null)
@@ -82,6 +79,7 @@ namespace _2025_01_23WPF
 
         private void SearchBTN_Click(object sender, RoutedEventArgs e)
         {
+        
             if (TBSearch.Text != "")
             {
                 if (LB.HasItems)
@@ -89,35 +87,43 @@ namespace _2025_01_23WPF
                     LB.Items.Clear();
                     LB.Items.Refresh();
                 }
-                string searchQuery = TBSearch.Text;
-                var items = TodoItem.FromCsv;
-                IEnumerable<string> FilteringQuery =
-                    from item in items
-                    where item.StartsWith(searchQuery) || item.Contains(searchQuery)
-                    orderby item ascending
-                    select item;
+                string searchQuery = TBSearch.Text.Trim().ToLower();
+                
+                var q2 = toDoItems.Select(x=>(item: x, label: x.Value!.Trim().ToLower()))
+                            .Where(x=>x.label.Contains(searchQuery))
+                            .OrderByDescending(x => x.label.StartsWith(searchQuery))
+                            .ThenBy(x => x.label)
+                            .Select(x => x.item);
+
                 //LB.Items.Refresh();
-                if (FilteringQuery.Any())
+                if (string.IsNullOrWhiteSpace(searchQuery))
                 {
-                    foreach (var item in FilteringQuery)
+                    LB.Items.Clear();
+                    toDoItems.ForEach(x => LB.Items.Add(x));
+                }
+                else
+                {
+                    IEnumerable<TodoItem> q = from x in toDoItems
+                            let label = x.Value!.Trim().ToLower()
+                            where label.Contains(searchQuery)
+                            orderby label.StartsWith(searchQuery) descending
+                            orderby label ascending
+                            select x;
+                    foreach (var item in q)
                     {
                         LB.Items.Add(item);
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Nem volt a keresésnek megfelelő elem, próbálja újra", "Keresési eredmény", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
             }
             else
             {
-                foreach (var item in ListBoxItems)
+                foreach (var item in toDoItems)
                 {
                     LB.Items.Add(item.ToString());
                 }
             }
+        
         }
-
         private void CB_Click(object sender, RoutedEventArgs e)
         {
             if(LB.SelectedItem!=null)
