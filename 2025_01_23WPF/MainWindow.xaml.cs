@@ -44,7 +44,7 @@ namespace _2025_01_23WPF
             }
         }
         
-        private void SaveBTN_Click(object sender, RoutedEventArgs e)
+        private void EditBTN_Click(object sender, RoutedEventArgs e)
         {
             if (LB.SelectedItem != null)
             {
@@ -117,6 +117,7 @@ namespace _2025_01_23WPF
             }
             else
             {
+                LB.Items.Clear();
                 foreach (var item in toDoItems)
                 {
                     LB.Items.Add(item.ToString());
@@ -144,6 +145,12 @@ namespace _2025_01_23WPF
                 DP.SelectedDate = selectedItem.Deadline;
                 CB.IsChecked = selectedItem.CompletedAt != null;
             }
+        }
+
+        private void AddBTN_Click(object sender, RoutedEventArgs e)
+        {
+            Window2 win2 = new Window2();
+            win2.Show();
         }
     }
 }
