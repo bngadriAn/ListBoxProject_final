@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using _2025_01_23WPF.Views;
 
 namespace _2025_01_23WPF
 {
@@ -42,6 +43,8 @@ namespace _2025_01_23WPF
                 toDoItems = File.ReadAllLines(FilePath).Select(x=>TodoItem.FromCsv(x)).ToList();
                 toDoItems.ForEach(x => LB.Items.Add(x));
             }
+            var mainPage = new MainPage();
+            MainFrame.Content = mainPage;
         }
         
         private void SaveBTN_Click(object sender, RoutedEventArgs e)

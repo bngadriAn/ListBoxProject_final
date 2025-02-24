@@ -9,7 +9,8 @@
         Title="MainWindow" Height="560" Width="400"
         Icon="./Project_Icon.png">
     <Grid Margin="0,0,0,0" ShowGridLines="False">
-        <Grid.ColumnDefinitions>
+        <Frame x:Name="MainFrame"/>
+            <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
