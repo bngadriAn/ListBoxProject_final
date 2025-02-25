@@ -19,9 +19,8 @@
         <Label Grid.Column="0" Grid.ColumnSpan="2" Content="Új elem felvétele" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Margin="109,7,0,0" Grid.Row="0" VerticalAlignment="Top" Width="130" Height="35"/>
         <TextBox Grid.Column="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center" FontSize="20" HorizontalAlignment="Left" Margin="35,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="280" Height="39" x:Name="TBInput"/>
         <DatePicker x:Name="DeadLineDP" HorizontalAlignment="Left" Margin="16,0,0,0" Grid.Row="1" VerticalAlignment="Center" Grid.Column="0"  Width="146" Height="26"/>
-        <CheckBox Grid.Column="1" x:Name="CB" Content="Teljesített" HorizontalAlignment="Left" VerticalAlignment="Top" Width="112" Height="26" VerticalContentAlignment="Center" Grid.Row="1" Margin="46,7,0,0"/>
-        <DatePicker x:Name="CompletedDB" HorizontalAlignment="Left" Margin="13,40,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"  Width="146" Height="26"/>
-        <Button Content="Hozzáadás" HorizontalAlignment="Left" Margin="40,39,0,0" Grid.Row="2" VerticalAlignment="Top" Height="42" Width="89" x:Name="AddBTN"/>
-        <Button Content="Vissza" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Height="42" Width="89" Grid.Column="1" x:Name="ReturnBTN" Margin="0,39,0,0"/>
+        <CheckBox Grid.Column="1" x:Name="CB" Content="Teljesített" HorizontalAlignment="Left" VerticalAlignment="Center" Width="112" Height="26" VerticalContentAlignment="Center" Grid.Row="1" Margin="46,0,0,0"/>
+        <Button Content="Hozzáadás" HorizontalAlignment="Left" Margin="40,39,0,0" Grid.Row="2" VerticalAlignment="Top" Height="42" Width="89" x:Name="AddBTN" Click="AddBTN_Click"/>
+        <Button Content="Vissza" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Height="42" Width="89" Grid.Column="1" x:Name="ReturnBTN" Margin="0,39,0,0" Click="ReturnBTN_Click"/>
     </Grid>
 </Window>
