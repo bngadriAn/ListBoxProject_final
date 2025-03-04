@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2025_01_23WPF"
-        Loaded="Window_Loaded"
         mc:Ignorable="d"
         Title="Elemek listázása" Height="560" Width="400"
         Icon="./Project_Icon.png">
