@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace _2025_01_23WPF.Views
 {
@@ -20,9 +21,29 @@ namespace _2025_01_23WPF.Views
     /// </summary>
     public partial class AddView : Page
     {
+        private const string FilePath = "todo.csv";
+        private List<TodoItem> toDoItems = new List<TodoItem>();
         public AddView()
         {
             InitializeComponent();
+        }
+
+        private void SaveItem()
+        {
+            var operation = new List<string>();
+            foreach (TodoItem item in LB.Items)
+            {
+                operation.Add(item.ToCsv());
+            }
+            File.WriteAllLines(FilePath, operation);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists(FilePath))
+            {
+                toDoItems = File.ReadAllLines(FilePath).Select(x => TodoItem.FromCsv(x)).ToList();
+            }
         }
     }
 }

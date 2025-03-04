@@ -13,23 +13,56 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace _2025_01_23WPF.Views
 {
     /// <summary>
     /// Interaction logic for MainPage.xaml
     /// </summary>
+    
     public partial class ListboxView : Page
     {
+        private const string FilePath = "todo.csv";
+        private List<TodoItem> toDoItems = new List<TodoItem>();
         public ListboxView()
         {
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists(FilePath))
+            {
+                toDoItems = File.ReadAllLines(FilePath).Select(x => TodoItem.FromCsv(x)).ToList();
+                toDoItems.ForEach(x => LB.Items.Add(x));
+            }
+        }
+
+        private void SaveItem()
+        {
+            var operation = new List<string>();
+            foreach (TodoItem item in LB.Items)
+            {
+                operation.Add(item.ToCsv());
+            }
+            File.WriteAllLines(FilePath, operation);
+        }
+
+        private void DelBTN_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Do you really want to delete the selected item?", "Confirmation", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                LB.Items.Remove(LB.SelectedItem);
+                SaveItem();
+            }
+        }
+
         private void SearchBTN_Click(object sender, RoutedEventArgs e)
         {
 
-            /*if (TBSearch.Text != "")
+            
+            if (TBSearch.Text != "")
             {
                 if (LB.HasItems)
                 {
@@ -72,7 +105,7 @@ namespace _2025_01_23WPF.Views
                     LB.Items.Add(item.ToString());
                 }
             }
-            */
+            
         }
 
         private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
