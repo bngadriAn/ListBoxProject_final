@@ -22,9 +22,10 @@
         </Grid.ColumnDefinitions>
 
         <Button x:Name="AddBTN" Grid.Column="1" Content="Elem hozzáadása" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Height="54" Width="145" Click="AddBTN_Click"/>
-        <CheckBox Grid.Column="2" x:Name="CB" Content="Teljesített" VerticalContentAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Height="28" Width="113"/>
+        <CheckBox Grid.Column="2" x:Name="CB" Content="Teljesített" VerticalContentAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Height="28" Width="113" Click="CB_Click"/>
         <DatePicker x:Name="DeadLineDP" VerticalContentAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Width="138" Height="38"/>
         <TextBox x:Name="TBInput" Grid.Column="0" Grid.ColumnSpan="3" VerticalContentAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Width="400" Height="35"/>
+        <ListBox Grid.Column="1" Grid.Row="2" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="125" HorizontalContentAlignment="Center" x:Name="LB" SelectionChanged="LB_SelectionChanged" />
 
 
     </Grid>

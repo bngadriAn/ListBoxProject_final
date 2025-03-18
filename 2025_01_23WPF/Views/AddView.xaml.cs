@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Runtime.Intrinsics.Arm;
 
 namespace _2025_01_23WPF.Views
 {
@@ -30,14 +31,12 @@ namespace _2025_01_23WPF.Views
 
         private void SaveItem()
         {
-            /*
             var operation = new List<string>();
             foreach (TodoItem item in LB.Items)
             {
                 operation.Add(item.ToCsv());
             }
             File.WriteAllLines(FilePath, operation);
-            */
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -45,20 +44,30 @@ namespace _2025_01_23WPF.Views
             if (File.Exists(FilePath))
             {
                 toDoItems = File.ReadAllLines(FilePath).Select(x => TodoItem.FromCsv(x)).ToList();
+                toDoItems.ForEach(x => LB.Items.Add(x));
             }
         }
 
         private void AddBTN_Click(object sender, RoutedEventArgs e)
         {
-            if (TBInput.Text != null)
+            if(TBInput.Text != "")
             {
-                var operation = new List<string>();
-                var item = new TodoItem
+                if (LB.SelectedItem != null)
                 {
-                    Value = TBInput.Text,
-                    Deadline = DeadLineDP.SelectedDate,
-                    CompletedAt = CB.IsChecked == true ? DateTime.Now : null
-                };
+                    var selectedItem = (TodoItem)LB.SelectedItem;
+                    selectedItem.Deadline = DeadLineDP.SelectedDate;
+                    selectedItem.Value = TBInput.Text;
+                }
+                else
+                {
+                    var item = new TodoItem
+                    {
+                        Value = TBInput.Text,
+                        Deadline = DeadLineDP.SelectedDate,
+                        CompletedAt = CB.IsChecked == true ? DateTime.Now : null
+                    };
+                    LB.Items.Add(item);
+                }
                 TBInput.Clear();
                 CB.IsChecked = false;
                 DeadLineDP.SelectedDate = null;
@@ -67,6 +76,27 @@ namespace _2025_01_23WPF.Views
             else
             {
                 MessageBox.Show("Please enter a value", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LB.SelectedItem != null)
+            {
+                var selectedItem = (TodoItem)LB.SelectedItem;
+                TBInput.Text = selectedItem.Value;
+                DeadLineDP.SelectedDate = selectedItem.Deadline;
+                CB.IsChecked = selectedItem.CompletedAt != null;
+            }
+        }
+
+        private void CB_Click(object sender, RoutedEventArgs e)
+        {
+            if (LB.SelectedItem != null)
+            {
+                ((TodoItem)LB.SelectedItem).CompletedAt = CB.IsChecked == true
+                    ? DateTime.Now
+                    : null;
             }
         }
     }
